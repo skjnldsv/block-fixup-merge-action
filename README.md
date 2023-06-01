@@ -1,51 +1,81 @@
-# 👮 Check User Permission
+# Block Autosquash Commits Action
 
-[![](https://img.shields.io/badge/marketplace-check--actor--permission-blueviolet?style=flat-square)](https://github.com/marketplace/actions/check-actor-permission)
-[![](https://img.shields.io/github/v/release/skjnldsv/check-actor-permission?style=flat-square&color=orange)](https://github.com/skjnldsv/check-user-permission/releases)
+A Github Action to prevent merging pull requests containing [autosquash](https://git-scm.com/docs/git-rebase#git-rebase---autosquash) commit messages.
 
-## 🚀 How to use?
+## How it works
 
-```yml
-name: Check User Permission
+If any commit message in the pull request starts with `fixup!` or `squash!` the check status will be set to `error`.
 
-on:
-  issues:
-    types: [opened, edited]
-  release:
-    types: [published]
+>⚠️ GitHub's API only returns the first 250 commits of a PR so if you're working on a really large PR your fixup commits might not be detected.
 
+## Usage
+
+```yaml
+on: pull_request
+
+name: Pull Requests
 
 jobs:
-  check:
+  message-check:
+    name: Block Autosquash Commits
+
     runs-on: ubuntu-latest
+
     steps:
-      - uses: skjnldsv/check-actor-permission@v2
+      - name: Block Autosquash Commits
+        uses: skjnldsv/block-autosquash-commits-action@v1
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
 ```
 
-### Input
+You'll also need to add a [required status check](https://help.github.com/en/articles/enabling-required-status-checks) rule for your action to block merging if it detects any `fixup!` or `squash!` commits.
 
-| Name | Desc | Type | Required |
-| -- | -- | -- | -- |
-| token | GitHub token | string | ✖ |
-| require | Test whether the user meets the required permission | string | ✖ |
+### Control Permissions
 
-- User permission: `admin` > `write` > `read`
+If your repository is using [control permissions](https://github.blog/changelog/2021-04-20-github-actions-control-permissions-for-github_token/) you'll need to set `pull-request: read` on either the workflow or the job.
 
-### Output
+#### Workflow Config
 
-- `result`: When use require
-- `user-permission`
+```yaml
+on: pull_request
 
-> How to use? 
-> - https://github.com/skjnldsv/check-actor-permission/blob/main/.github/workflows/check-permission.yml
+name: Pull Request
 
-## ⚡ Feedback
+permissions:
+  pull-requests: read
 
-You are very welcome to try it out and put forward your comments. You can use the following methods:
+jobs:
+  message-check:
+    name: Block Autosquash Commits
 
-- Report bugs or consult with [Issue](https://github.com/skjnldsv/check-user-permissionissues)
-- Submit [Pull Request](https://github.com/skjnldsv/check-user-permission/pulls) to improve the code of `check-user-permission`
+    runs-on: ubuntu-latest
 
-## LICENSE
+    steps:
+      - name: Block Autosquash Commits
+        uses: skjnldsv/block-autosquash-commits-action@v1
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+```
 
-[MIT](./LICENSE)
+#### Job Config
+
+```yaml
+on: pull_request
+
+name: Pull Request
+
+jobs:
+  message-check:
+    name: Block Autosquash Commits
+
+    runs-on: ubuntu-latest
+
+    permissions:
+      pull-requests: read
+
+    steps:
+      - name: Block Autosquash Commits
+        uses: skjnldsv/block-autosquash-commits-action@v1
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+```
