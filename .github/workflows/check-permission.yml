@@ -1,0 +1,17 @@
+name: Check permissions
+
+on:
+  workflow_dispatch:
+
+jobs:
+  repositories:
+    runs-on: ubuntu-latest
+    name: Test current main branch
+
+    steps:
+      - name: Check actor permission
+        uses: skjnldsv/check-actor-permission@main
+        with:
+          require: admin
+      - name: Success
+        run: echo 'Success 🎉'

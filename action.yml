@@ -1,0 +1,18 @@
+# https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions
+name: 'Block squash and fixup commits'
+description: 'A Github Action to prevent merging pull requests containing autosquash commit messages.'
+author: 'skjnldsv'
+
+# https://actions-cool.github.io/github-action-branding/
+branding:
+  icon: 'slash'
+  color: 'blue'
+
+inputs:
+  repo-token:
+    description: "Token for the repo. Can be passed in using {{ secrets.GITHUB_TOKEN }}"
+    required: true
+
+runs:
+  using: 'node16'
+  main: 'dist/index.js'
