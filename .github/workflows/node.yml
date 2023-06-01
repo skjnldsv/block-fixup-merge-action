@@ -1,0 +1,52 @@
+name: Node
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+concurrency: 
+  group: node-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [14, 16, 18]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    name: build
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up node ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Check build changes
+        # See https://github.com/skjnldsv/check-actor-permission/blob/main/action.yml#L27
+        if: matrix.node-version == 16
+        run: |
+          bash -c "[[ ! \"`git status --porcelain `\" ]] || (echo 'Please recompile and commit the assets, see the section \"Show changes on failure\" for details' && exit 1)"
+
+      - name: Show changes on failure
+        if: failure()
+        run: |
+          git status
+          git --no-pager diff
+          exit 1 # make it red to grab attention

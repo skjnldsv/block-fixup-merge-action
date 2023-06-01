@@ -1,0 +1,31 @@
+{
+  "main": "src/main.js",
+  "scripts": {
+    "build": "ncc build",
+    "lint": "eslint src",
+    "lint:fix": "eslint --fix src",
+    "prettier": "prettier --check src/*.js",
+    "prettier:fix": "prettier --write src/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/skjnldsv/block-fixup-merge-action",
+    "branch": "main"
+  },
+  "author": "skjnldsv",
+  "license": "MIT",
+  "dependencies": {
+    "@actions/core": "^1.2.6",
+    "@actions/github": "^5.1.1",
+    "@octokit/rest": "^19.0.5",
+    "actions-util": "^1.0.0"
+  },
+  "devDependencies": {
+    "@umijs/fabric": "^3.0.0",
+    "@vercel/ncc": "^0.34.0",
+    "eslint": "^8.26.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "prettier": "^2.2.1"
+  }
+}
