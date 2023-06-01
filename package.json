@@ -17,15 +17,19 @@
   "dependencies": {
     "@actions/core": "^1.2.6",
     "@actions/github": "^5.1.1",
-    "@octokit/rest": "^19.0.11",
+    "@octokit/rest": "^19.0.5",
     "actions-util": "^1.0.0"
   },
   "devDependencies": {
-    "@umijs/fabric": "^4.0.1",
+    "@umijs/fabric": "^3.0.0",
     "@vercel/ncc": "^0.34.0",
-    "eslint": "^8.41.0",
+    "eslint": "^8.26.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.26.0",
-    "prettier": "^2.8.8"
+    "prettier": "^2.2.1"
+  },
+  "engines": {
+    "node": "^16.0.0",
+    "npm": "^7.0.0 || ^8.0.0"
   }
 }
