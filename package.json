@@ -21,7 +21,7 @@
     "actions-util": "^1.1.4"
   },
   "devDependencies": {
-    "@eslint/js": "^9.39.4",
+    "@eslint/js": "^10.0.1",
     "@stylistic/eslint-plugin": "^5.10.0",
     "@umijs/fabric": "^4.0.1",
     "@vercel/ncc": "^0.44.1",
